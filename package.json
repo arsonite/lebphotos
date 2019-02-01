@@ -1,0 +1,23 @@
+{
+  "name": "we2-ue4-codepack",
+  "author": "Johannes Konert",
+  "licence": "MIT",
+  "version": "0.0.2",
+  "description": "Initial code set for exercise 4 (implementing an REST API for pins and connect them to mongoDB via mongoose, then using this API with backbone.js)",
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=development DEBUG=we2:* node app.js",
+    "startDebug": "cross-env NODE_ENV=development DEBUG=we2:* nodemon app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cross-env": "^5.1.1",
+    "debug": "^3.1.0",
+    "express": "^4.16.2",
+    "mongoose": "^5.1.6",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.17.5",
+    "serve-favicon": "^2.4.5"
+  },
+  "devDependencies": {}
+}

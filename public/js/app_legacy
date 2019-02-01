@@ -1,0 +1,183 @@
+/* A collection of functions for the image gallery.
+ * authors: Burak 853872, Eric 853428, Levente Hernádi 853428
+ */
+
+console.log(localStorage);
+
+/* Adds a favourite-button, as well as a detail-button to each container that has an image inside of it */
+function addFavAndDetButtons() {
+    var containers = document.getElementsByClassName("picture");
+    for (var i = 0; i < containers.length; i++) {
+        var btn = document.createElement("button");
+        btn.setAttribute("class", "favourite");
+        btn.appendChild(document.createTextNode("favourite"));
+        var btn2 = document.createElement("button");
+        btn2.setAttribute("class", "detail");
+        btn2.appendChild(document.createTextNode("details"));
+        containers[i].appendChild(btn);
+        containers[i].appendChild(btn2);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", addFavAndDetButtons());
+
+/* The Favourite-object that stores information on which image the favourite-button was clicked */
+function Favourite(picture, imgName, isActivated) {
+    this.picture = picture;
+    thi.imgName = imgName;
+    this.isActivated = isActivated;
+}
+
+/* Creates a Favourite-object for each favourite button and stores them in an array.
+ * @return : an array storing the favourite-objects
+ */
+function initializeFavourites() {
+    var btns = document.getElementsByClassName('favourite');
+    var array = [];
+
+    for (var i = 0; i < btns.length; i++) {
+        var parentDiv = btns[i].parentElement;
+        var picture = parentDiv.getElementsByTagName('img')[0];
+        var pathName = picture.src;
+        var filename = parseFileName(pathName);
+
+        var bool = false;
+        if (localStorage.getItem(JSON.stringify(filename))) {
+            bool = true;
+        }
+
+        var favourite = new Favourite(picture, filename, bool);
+        array.push(favourite)
+    }
+    return array;
+}
+
+/* Receives the pathname of an image and returns the parsed filename */
+function parseFileName(pathName) {
+    return pathName.replace(/^.*[\\\/]/, "");
+}
+
+/* Updates the the isActivated attribute of the Favourite object belonging to the specific favourite button */
+function activateFavouriteBtn() {
+    var favBtns = document.getElementsByClassName('favourite');
+    for (var i = 0; i < favBtns.length; i++) {
+        favBtns[i].addEventListener('click', function (event) {
+            var parent = event.target.parentElement;
+            var pic = parent.getElementsByTagName('img')[0];
+            var index = favArray.findIndex(x => x.picture == pic);
+            favArray[index].isActivated = !favArray[index].isActivated;
+            updateFavBtns(favArray);
+        })
+    }
+}
+
+/* Updates the style of the favourite button depending on the status of the the Favourite object
+ * that belongs to that specific button
+ * @param: array of Favourite objects
+ */
+function updateFavBtns(fArray) {
+    for (var i = 0; i < fArray.length; i++) {
+        var firstparent = fArray[i].picture.parentElement;
+        var secondparent = firstparent.parentElement;
+        var favButton = secondparent.getElementsByClassName('favourite')[0];
+        if (fArray[i].isActivated) {
+            favButton.style.backgroundColor = '#ff5555';
+            localStorage.setItem(JSON.stringify(fArray[i].imgName), JSON.stringify(true));
+        } else {
+            favButton.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+            localStorage.removeItem(JSON.stringify(fArray[i].imgName));
+        }
+    }
+}
+
+var favArray = initializeFavourites();
+updateFavBtns(favArray);
+
+var checkBox = document.getElementById('displayOnlyFavourites');
+
+var modal = document.getElementById('pictureModal');
+
+/* This functions activates the modal view if a detail-button is clicked */
+function activateModalView() {
+    var detBtns = document.getElementsByClassName('detail');
+    var modalImage = document.getElementById('modalImage');
+    for (var i = 0; i < detBtns.length; i++) {
+        detBtns[i].addEventListener("click", function (event) {
+            var pic = event.target.parentElement.getElementsByTagName('img')[0];
+            modal.style.display = "block";
+            modalImage.src = pic.src;
+
+            var img = new Image();
+            img.src = pic.src;
+            height = img.height;
+            width = img.width;
+
+            // Formula to calculate the filesize of an Image: # Of Pixels X Bit Depth ÷ 8 ÷ 1024 = File Size in Kilobytes (kB)
+            size = Math.round((height * width) / 8 / 1024);
+
+            // Random generation of fictional date
+            var date =
+                Math.floor(Math.random() * 31 + 1) + "." +
+                Math.floor(Math.random() * 12 + 1) + "." +
+                Math.floor(Math.random() * 18 + 2000);
+
+            // Writes the necessary details into the modal
+            document.querySelector(".modal p").innerHTML =
+                "" + parseFileName(img.src) +
+                " | <strong>Height</strong> : " + height +
+                " | <strong>Width</strong>: " + width +
+                " | <strong>Size</strong> ~ " + size + "kB" +
+                " | <strong>Date</strong>: " + date;
+        })
+    }
+}
+
+var span = document.getElementsByClassName('close')[0];
+span.addEventListener('click', function () {
+    modal.style.display = 'none';
+});
+activateFavouriteBtn();
+activateModalView();
+
+/* Here the favourite filter is implemented if the checkbox on the document is checked, then it checks which
+ * pictures have their favourite button activated and only displays them.
+ */
+checkBox.addEventListener('click', function () {
+    var bool = false;
+    var noFav = document.getElementById("noFav");
+    if (checkBox.checked) {
+        for (var favourite of favArray) {
+            if (!favourite.isActivated) {
+                var container = favourite.picture.parentElement.parentElement;
+                container.style.display = 'none';
+            } else {
+                bool = true;
+            }
+        }
+        if (!bool) {
+            noFav.innerHTML = "No favourites selected.";
+        }
+    } else {
+        for (var favourite of favArray) {
+            var container = favourite.picture.parentElement.parentElement;
+            container.style.display = 'flex';
+        }
+        noFav.innerHTML = "";
+    }
+});
+
+/* Resets the localStorage and the selection of favourites */
+document.getElementById("resetFavourites").onclick = function () {
+    localStorage.fav = null;
+    localStorage.clear();
+    location.reload();
+};
+
+document.getElementById("ham").onclick = function () {
+    var lb = document.getElementById("leftBar");
+    if (lb.className === "leftbar") {
+        lb.className += " responsive";
+    } else {
+        lb.className = "leftbar";
+    }
+}

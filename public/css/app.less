@@ -1,0 +1,355 @@
+/* ––––––– variables ––––––– */
+
+@nav-white: #ededed;
+@main-white: whitesmoke;
+@button-color: rgba(255, 255, 255, 0.6);
+
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    font-family: Noto Sans, sans;
+}
+
+/* ––––––– topBar ––––––– */
+
+nav {
+    background-color: @nav-white;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+
+    /* https://www.w3schools.com/howto/howto_js_topnav_responsive.asp */
+    #ham{
+        display: inline-block;
+        margin-top: 10px;
+        margin-left: 10px;
+
+        .bar1, .bar2, .bar3 {
+            width: 30px;
+            height: 4px;
+            background-color: @nav-white;
+            margin: 6px 0px;
+            transition: 0.4s;
+        }
+    }
+
+    #nav-text {
+        display: flex;
+        padding: 10px;
+        flex-wrap: wrap;
+    }
+
+    /* this margin exists to keep the #nav-text aligned; should be the same as #ham margin-left */
+    #empty-nav-box{
+        margin-right: 10px;
+    }
+}
+
+/* ––––––– end topBar ––––––– */
+
+/* ––––––– leftBar ––––––– */
+
+.leftBar {
+    position: fixed;
+    left: 10px;
+
+    .leftBarItem {
+        padding: 10px;
+    }
+}
+
+/* ––––––– end leftBar –––––––*/
+
+/* ––––––– gallery ––––––– */
+
+main {
+    padding-top: 52px; //because of fixed nav
+    display: flex;
+    background-color: @main-white;
+}
+
+#mainContainer {
+    display: flex;
+    flex-grow: 1;
+
+    #gallery {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        background-color: @main-white;
+        width: 100%;
+        margin: 0px 150px;
+
+        p {
+            padding: 132px 0px;
+            font-size: 30px;
+            color: #AAA;
+        }
+
+        display: flex;
+        //flex-direction: column;
+
+        .picture {
+            width: 250px;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            justify-content: flex-end;
+
+            .imgContainer {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                overflow: hidden;
+                width: 250px;
+                height: 250px;
+
+                img {
+                    height: 100%;
+                    width: auto;
+                }
+            }
+            /* .imgContainer */
+        }
+        /* .picture */
+    }
+    /* #gallery */
+}
+
+/* #mainContainer */
+
+/* ––––––– end gallery ––––––– */
+
+/* ––––––– footer ––––––– */
+
+footer {
+    background-color: #444;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+#gitlab-logo {
+    height: 50px;
+    width: 250px;
+    margin-bottom: 20px;
+}
+
+/*––––––– end footer ––––––– */
+
+/* ––––––– buttons ––––––– */
+
+button {
+    display: none;
+    cursor: pointer;
+}
+
+.picture:hover button {
+    display: inline-block;
+}
+
+.detail,
+.favourite {
+    /* relative position because hover would break otherwise */
+    position: relative;
+    margin-top: -40px;
+    padding: 10px 20px;
+    border: none;
+    background-color: @button-color;
+    transition-duration: 0.4s;
+    text-decoration: none;
+}
+
+#resetFavourites {
+    margin: 0;
+    padding: 10px 20px;
+    background-color: #EEE;
+    border: 1px solid #AAA;
+}
+
+button:hover {
+    background-color: @button-color + 5;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    overflow: auto;
+
+    p {
+        margin: 10px;
+        text-align: center;
+        color: white;
+    }
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-height: 75%;
+    max-width: 800px;
+    animation-name: pictureTrans;
+    animation-duration: 0.6s;
+}
+
+@keyframes pictureTrans {
+    from {
+        transform: scale(0)
+    }
+    to {
+        transform: scale(1)
+    }
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: red;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    cursor: pointer;
+}
+
+/* ––––––– end buttons ––––––– */
+
+/* ––––––– favourite-label ––––––– */
+
+/* Checkbox for favourites source: https://codepen.io/pamdayne/pen/vGRqLM, author: Pamela Dayne */
+
+#displayOnlyFavourites {
+    display: none;
+}
+
+#labelFavouriteDisplay {
+    font-size: 1rem;
+    color: #353535;
+    display: inline-block;
+    cursor: pointer;
+}
+
+#labelFavouriteDisplay:before {
+    content: '';
+    display: inline-block;
+    background: #FF0022;
+    position: relative;
+    left: 0;
+    top: 5px;
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+    border-radius: 80%;
+    box-shadow: 0px 1px 0 0 rgba(0, 0, 0, .2);
+    box-sizing: border-box;
+    border: 10px solid #fff;
+    transition: border .3s ease;
+}
+
+#displayOnlyFavourites:checked + #labelFavouriteDisplay:before {
+    border-color: #fff;
+    border-width: 3px;
+}
+
+#displayOnlyFavourites + #labelFavouriteDisplay {
+    transition: color .7s ease;
+}
+
+#displayOnlyFavourites:checked + #labelFavouriteDisplay {
+    color: #000;
+}
+
+/* ––––––– end favourite-label ––––––– */
+
+/* ––––––– media query's ––––––– */
+
+@media only screen and (max-width: 1170px) {
+
+    #mainContainer {
+        #gallery {
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    nav {
+        #ham{
+            display: inline-block;
+
+            .bar1, .bar2, .bar3 {
+                background-color: black;
+            }
+        }
+    }
+
+    .leftbar {
+        left: 0;
+        background-color: @nav-white - 5;
+        width: 100%;
+
+        * {
+            display: none;
+        }
+
+        #resetFavourites {
+            padding: 10px 20px;
+            background-color: #BBB;
+            border: 0px;
+        }
+    }
+
+    #resetFavourites {
+        margin: 0;
+        border: 0px;
+    }
+
+
+    /* Changes were in a separated media Query before*/
+    .leftbar.responsive {
+        * {
+            display: flex;
+            justify-content: center;
+        }
+        /* why is this here?; breaks everything
+        #labelFavouriteDisplay {
+            display: flex;
+            margin: 0;
+            padding: 40px 0 0 0;
+        }
+
+        #labelFavouriteDisplay:before {
+            margin: 34px 0 0 7px;
+        }*/
+    }
+}
+
+@media only screen and (max-width: 680px) {
+
+    #mainContainer {
+        #gallery {
+            padding: 0;
+            margin: 0;
+        }
+    }
+}

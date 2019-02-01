@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>lebPhotos - Bildergallery for WebEng SS18</title>
+    <link rel="stylesheet" href="./css/app.css">
+    <script data-main="./js/appclient" src="./js/require.js" defer></script>
+    <meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+    <nav>
+        <div id="ham">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+        <div id="nav-text">
+            <img style="margin-right: 5px; height: 35px; width: 35px" src="images/photo-camera.svg">
+            <h1>lebPhotos</h1>
+        </div>
+        <div id="empty-nav-box"></div>
+    </nav>
+
+    <main>
+        <div id="leftBar" class="leftbar">
+            <div id="show-fav-checkbox" class="leftBarItem">
+                <input id="displayOnlyFavourites" type="checkbox">
+                <label id="labelFavouriteDisplay" for="displayOnlyFavourites">Show Favourites</label>
+            </div>
+            <div class="leftBarItem">
+                <input id="resetFavourites" type="button" value="Reset Favourites">
+            </div>
+
+        </div>
+
+        <!-- backbone.js Template -->
+        <script id="pictureTemplate" type="text/template">
+            <div class="imgContainer">
+                <img src="<%= src %>">
+            </div>
+        </script>
+
+        <div id="mainContainer">
+            <div id="gallery">
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <a href="https://gitlab.beuth-hochschule.de/leb/we2">
+            <img id ="gitlab-logo" src="images/gitlab-logo.svg">
+        </a>
+        <p>
+            (c) <strong>L</strong>evente Hernadi 860492; <strong>E</strong>ric Wenzke 853428; <strong>B</strong>urak Guenaydin 853872
+        </p>
+    </footer>
+</body>
+
+</html>
